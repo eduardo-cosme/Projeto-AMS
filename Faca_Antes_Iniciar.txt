@@ -1,5 +1,6 @@
 Criar chave do Gemini:
 https://aistudio.google.com/api-keys
+https://aistudio.google.com/apikey
 
 Instale:
 (se APENAS já não estiver instalado)

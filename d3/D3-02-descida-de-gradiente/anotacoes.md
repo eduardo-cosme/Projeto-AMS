@@ -9,41 +9,41 @@
 | Taxa | Última linha da saída (perda, w, b) |
 |---|---|
 | 0,001 | passo  200 perda 22462.1 w 215.016 b -17.7381 |
-| 0,1 | passo  200 perda 0.752176 w 300.008 b 4.91185 |
-| 1,5 | passo  200 perda inf w -3.12216e+190 b 4.826e+189 |
+| 0,1   |   passo  200 perda 0.752176 w 300.008 b 4.91185 |
+| 1,5   |   passo  200 perda inf w -3.12216e+190 b 4.826e+189 |
 
 ## As quatro perguntas do slide 11
 
 **1. A perda está caindo a cada passo, ou oscilando?**
 
-R: Depende da taxa. Com taxa 0,1 a perda cai a cada passo sem oscilar —
-284802 no passo 1, 36734,6 no passo 2, 5450 no passo 3, caindo de forma
-monotônica até 0,752176 no passo 200. Com taxa 0,001 também cai de forma
-monotônica, só que devagar (284802 → 281149 → 277543 nos três primeiros
-passos). Com taxa 1,5 não oscila: cresce de forma monotônica e explosiva
-(284802 no passo 1 para 2,14e+07 já no passo 2).
+Taxa 0,1: a perda diminui continuamente, sem apresentar oscilações. Começa em 284.802 no passo 1, cai para 36.734,6 no passo 2 e 5.450 no passo 3, chegando a 0,752176 no passo 200. Isso indica uma convergência rápida e estável.
+
+Taxa 0,001: a perda também diminui continuamente, sem oscilações, mas em um ritmo muito mais lento. Nos três primeiros passos, os valores passam de 284.802 para 281.149 e depois para 277.543. Isso indica uma convergência mais gradual.
+
+Taxa 1,5: a perda não apresenta oscilações, mas cresce de maneira contínua e explosiva. Parte de 284.802 no passo 1 e chega a aproximadamente 21,4 milhões já no passo 2. Isso indica que a taxa de aprendizagem está muito alta, fazendo com que o algoritmo se afaste da solução em vez de convergir.
 
 **2. Ela estabiliza, ou continua descendo até o fim?**
 
-R: Com taxa 0,1 ela estabiliza bem antes do passo 200 — do passo 198 ao 200
-a perda fica parada em 0,752176 (três casas decimais iguais). Com taxa 0,001
-ela ainda está caindo no passo 200 (22462,1), sem ter estabilizado — é a
-taxa "baixa demais" do slide 12. Com taxa 1,5 ela não estabiliza: diverge até
-virar `inf` no passo 161.
+O comportamento da perda depende da taxa de aprendizagem utilizada:
+
+Taxa 0,1: estabiliza antes do passo 200, mantendo a perda em aproximadamente 0,752176. Isso indica que o algoritmo chegou à convergência.
+
+Taxa 0,001: continua diminuindo até o passo 200, mas ainda não estabilizou, pois a taxa de aprendizagem é muito baixa.
+
+Taxa 1,5: não estabiliza. A perda cresce descontroladamente até atingir inf (infinito) no passo 161, indicando que o algoritmo divergiu.
+
+Ou seja, a taxa 0,1 apresenta o melhor resultado, pois alcança a estabilização rapidamente. A taxa 0,001 é lenta demais e a taxa 1,5 é alta demais, causando divergência.
 
 **3. Os pesos encontrados batem com os que geraram os dados?**
 
-R: Só com taxa 0,1: w=300,008 e b=4,91185 ficam muito perto dos verdadeiros
-w=300 e b=5. Com taxa 0,001 os pesos ficam longe (w=215,016, b=-17,7381) —
-200 passos não foram suficientes. Com taxa 1,5 os pesos não batem com nada:
-w=-3,12e+190 e b=4,83e+189 são artefatos do estouro numérico, não uma
-estimativa.
+Taxa 0,1: sim. Os valores encontrados (w=300,008 e b=4,91185) são muito próximos dos valores reais (w=300 e b=5).
+
+Taxa 0,001: não. Os valores ainda estão distantes dos reais, pois 200 passos não foram suficientes para chegar à convergência.
+
+Taxa 1,5: não. Os valores encontrados são resultados de instabilidade numérica causada pela taxa de aprendizagem excessiva.
+
+Ou seja, somente a taxa 0,1 conseguiu encontrar pesos próximos dos valores reais.
 
 **4. Se algo divergiu, qual foi o primeiro passo estranho?**
 
-R: Com taxa 1,5, a perda já nasce estranha no passo 1 (284802, igual ao
-primeiro passo das outras taxas) mas dobra de tamanho a cada passo em vez de
-cair: 2,14e+07 no passo 2, 1,63e+09 no passo 3, 1,23e+11 no passo 4 — um
-crescimento exponencial claro desde o início. O primeiro passo em que ela
-deixa de ser um número finito é o passo 161, onde a perda vira `inf`;
-rodando com `--passos 350`, o primeiro `nan` da coluna aparece no passo 326.
+R: Com taxa 1,5, a perda começa a aumentar drasticamente já no passo 2. Enquanto o esperado seria diminuir a cada passo, ela passa de 284.802 no passo 1 para 21,4 milhões no passo 2, 1,63 bilhão no passo 3 e 123 bilhões no passo 4. Esse crescimento acelerado continua até atingir inf (infinito) no passo 161, demonstrando que a taxa de aprendizagem está muito alta e faz o algoritmo divergir.
