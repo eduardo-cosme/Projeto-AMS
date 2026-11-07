@@ -133,7 +133,7 @@ def reduzir_vizinhanca(matriz: np.ndarray, semente: int) -> np.ndarray:
 # a MESMA que você escreveu no lab-01 — produto escalar dividido pelo
 # produto das duas normas. Uma linha, com np.dot e np.linalg.norm.
 def similaridade_cosseno(a, b):
-    ...
+    return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
 
 
 # TAREFA 2 — a projeção do vetor novo (pergunta 4 do slide 53): o mapa de
@@ -142,7 +142,7 @@ def similaridade_cosseno(a, b):
 # componentes do modelo:
 #     (vetor - modelo["centro"]) @ modelo["componentes"]
 def posicionar_novo(vetor, modelo):
-    ...
+    return (np.asarray(vetor, dtype=float) - modelo["centro"]) @ modelo["componentes"]
 # =============================================================================
 
 
